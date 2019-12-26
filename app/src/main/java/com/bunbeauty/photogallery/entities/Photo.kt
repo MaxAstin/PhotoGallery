@@ -1,4 +1,4 @@
-package com.bunbeauty.photogallery
+package com.bunbeauty.photogallery.entities
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName

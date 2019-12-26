@@ -1,11 +1,12 @@
 package com.bunbeauty.photogallery
 
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.widget.ImageView
-import android.widget.TextView
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
-import okhttp3.ResponseBody
+import com.bunbeauty.photogallery.entities.Album
+import com.bunbeauty.photogallery.entities.Photo
+import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -13,15 +14,13 @@ import retrofit2.Response
 
 class AlbumsActivity : AppCompatActivity() {
 
-    private lateinit var textView: TextView
-    private lateinit var imageView: ImageView
+    private lateinit var albumsLayout: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.album_main)
 
-        //textView = findViewById(R.id.testAlbumsActivityText)
-        imageView = findViewById(R.id.testAlbumsActivityImage)
+        albumsLayout = findViewById(R.id.albumsAlbumsActivityLayout)
 
         getAlbums()
     }
@@ -29,38 +28,38 @@ class AlbumsActivity : AppCompatActivity() {
     private fun getAlbums() {
         NetworkService.getInstance()
             .getJsonApi()
-            .getPhotosByAlbumId(12)
-            .enqueue(object : Callback<List<Photo>> {
-                override fun onResponse(call: Call<List<Photo>>, response: Response<List<Photo>>) {
-                    NetworkService.changeBaseUrl(NetworkService.PHOTO_URL)
-                    val photos = response.body()
-                    getPhoto(photos!![0].url!!)
+            .getAlbums()
+            .enqueue(object : Callback<List<Album>> {
+                override fun onResponse(call: Call<List<Album>>, response: Response<List<Album>>) {
+                    for (album in response.body()!!) {
+                        getPhotosFromAlbum(album.id)
+                    }
                 }
 
-                override fun onFailure(call: Call<List<Photo>>, t: Throwable) {
+                override fun onFailure(call: Call<List<Album>>, t: Throwable) {
                 }
             })
     }
 
-    fun getPhoto(url: String) {
-        val parms = url.removeRange(0..NetworkService.PHOTO_URL.length)
-        val firstParm = parms.split("/")[0]
-        val secondParm = parms.split("/")[1]
-
+    private fun getPhotosFromAlbum(albumId: Int) {
+        /*val width = resources.getDimensionPixelSize(R.dimen.photo_width)
+        val height = resources.getDimensionPixelSize(R.dimen.photo_height)*/
         NetworkService.getInstance()
             .getJsonApi()
-            .getPhoto(firstParm, secondParm)
-            .enqueue(object : Callback<ResponseBody> {
-                override fun onResponse(
-                    call: Call<ResponseBody>,
-                    response: Response<ResponseBody>
-                ) {
-                    val url = call.request().url()
-                    val bitmap = BitmapFactory.decodeStream(response.body()!!.byteStream())
-                    imageView.setImageBitmap(bitmap)
+            .getPhotosByAlbumId(albumId)
+            .enqueue(object : Callback<List<Photo>> {
+                override fun onResponse(call: Call<List<Photo>>, response: Response<List<Photo>>) {
+                    val imageView = ImageView(this@AlbumsActivity)
+                    albumsLayout.addView(imageView)
+
+                    Picasso.get()
+                        .load(response.body()!![0].url!!)
+                        .resize(100, 100)
+                        .centerCrop()
+                        .into(imageView)
                 }
 
-                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                override fun onFailure(call: Call<List<Photo>>, t: Throwable) {
                 }
             })
     }

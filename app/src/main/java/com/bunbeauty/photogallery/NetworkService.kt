@@ -12,9 +12,6 @@ class NetworkService {
     companion object {
         private var BASE_URL = "https://jsonplaceholder.typicode.com"
 
-        const val PHOTO_URL = "https://via.placeholder.com"
-        const val ALBUMS_URL = "https://jsonplaceholder.typicode.com/albums"
-
         private var retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
