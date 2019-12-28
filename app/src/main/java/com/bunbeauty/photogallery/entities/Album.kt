@@ -13,5 +13,6 @@ data class Album(
     val id: Int = 0,
     @SerializedName("title")
     @Expose
-    val title: String = "Альбом №$id"
+    val title: String = "Альбом №$id",
+    val firstImages: ArrayList<String> = ArrayList()
 ) {}
