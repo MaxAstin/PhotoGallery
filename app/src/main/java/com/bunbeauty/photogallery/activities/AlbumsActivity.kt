@@ -1,14 +1,14 @@
-package com.bunbeauty.photogallery
+package com.bunbeauty.photogallery.activities
 
 import android.os.Bundle
-import android.widget.ImageView
-import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bunbeauty.photogallery.NetworkService
+import com.bunbeauty.photogallery.R
+import com.bunbeauty.photogallery.adapters.GalleryAdapter
 import com.bunbeauty.photogallery.entities.Album
 import com.bunbeauty.photogallery.entities.Photo
-import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -18,7 +18,7 @@ class AlbumsActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private val albumsList = ArrayList<Album>()
-    private lateinit var albumsAdapter: AlbumsAdapter
+    private lateinit var albumsAdapter: GalleryAdapter
 
     private var countAlbums = 0
 
@@ -30,7 +30,7 @@ class AlbumsActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         getAlbums()
-        albumsAdapter = AlbumsAdapter(albumsList)
+        albumsAdapter = GalleryAdapter(albumsList)
         recyclerView.adapter = albumsAdapter
     }
 

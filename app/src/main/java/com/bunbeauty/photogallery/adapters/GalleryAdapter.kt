@@ -1,21 +1,24 @@
-package com.bunbeauty.photogallery
+package com.bunbeauty.photogallery.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bunbeauty.photogallery.adapters.elements.AlbumElement
+import com.bunbeauty.photogallery.R
 import com.bunbeauty.photogallery.entities.Album
 
-class AlbumsAdapter(private val albumsList: ArrayList<Album>) :
-    RecyclerView.Adapter<AlbumsAdapter.AlbumsViewHolder>() {
+class GalleryAdapter(private val albumsList: ArrayList<Album>) :
+    RecyclerView.Adapter<GalleryAdapter.AlbumsViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): AlbumsViewHolder {
         val layoutIdForListItem = R.layout.album_element
         val layoutInflater = LayoutInflater.from(viewGroup.context)
         val view = layoutInflater.inflate(layoutIdForListItem, viewGroup, false)
 
-        return AlbumsAdapter(albumsList).AlbumsViewHolder(view, viewGroup.context)
+        return GalleryAdapter(albumsList)
+            .AlbumsViewHolder(view, viewGroup.context)
     }
 
     override fun onBindViewHolder(albumsViewHolder: AlbumsViewHolder, i: Int) {

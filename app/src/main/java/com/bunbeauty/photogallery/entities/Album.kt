@@ -15,4 +15,9 @@ data class Album(
     @Expose
     val title: String = "Альбом №$id",
     val firstImages: ArrayList<String> = ArrayList()
-) {}
+) {
+
+    companion object {
+        const val ALBUM_ID = "album id"
+    }
+}

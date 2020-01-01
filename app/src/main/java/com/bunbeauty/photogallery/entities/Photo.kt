@@ -1,5 +1,9 @@
 package com.bunbeauty.photogallery.entities
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import com.bunbeauty.photogallery.R
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
@@ -20,4 +24,9 @@ data class Photo(
     @SerializedName("thumbnailUrl")
     @Expose
     val thumbnailUrl: String? = null
-) {}
+) {
+
+    companion object {
+        const val PHOTO_NUMBER = "photo number"
+    }
+}
